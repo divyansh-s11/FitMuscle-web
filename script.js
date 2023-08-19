@@ -83,55 +83,71 @@ function showResult() {
   let quote = "";
 
   if (userGender === "female") {
-    const userBodyType = userAnswers[1];
-    
-    if (userBodyType === "a") {
-      quote = "Lose fat and achieve a lean physique";
-    } else if (userBodyType === "b" || userBodyType === "d") {
-      quote = "Build Muscles";
-    } else if (userBodyType === "c") {
-      quote = "Build Muscles or Lose fat and achieve a lean physique";
-    }
-  } else if (userGender === "male") {
-    const userBodyType = userAnswers[1];
-    const userFitnessStruggle = userAnswers[3];
+      const userBodyType = userAnswers[1];
 
-    if (userBodyType === "a" && userFitnessStruggle === "a") {
-      quote = "Build Muscles";
-    } else if (userBodyType === "a" && userFitnessStruggle === "b") {
-      quote = "Lose fat and achieve lean Physique";
-    } else if (userBodyType === "b" && userFitnessStruggle === "a") {
-      quote = "Lose fat and achieve lean Physique";
-    } else if (userBodyType === "b" && userFitnessStruggle === "b") {
-      quote = "Build Muscles";
-    } else if (userBodyType === "b" && userFitnessStruggle === "c") {
-      quote = "Lose fat and achieve lean Physique";
-    } else if (userBodyType === "b" && userFitnessStruggle === "d") {
-      quote = "Build Muscles";
-    } else if (userBodyType === "c" && userFitnessStruggle === "a") {
-      quote = "Build Muscles";
-    } else if (userBodyType === "c" && userFitnessStruggle === "b") {
-      quote = "Lose fat and achieve lean Physique";
-    } else if (userBodyType === "c" && userFitnessStruggle === "c") {
-      quote = "Build Muscles";
-    } else if (userBodyType === "c" && userFitnessStruggle === "d") {
-      quote = "Lose fat and achieve lean Physique";
-    } else if (userBodyType === "d" && userFitnessStruggle === "a") {
-      quote = "Build Muscles";
-    } else if (userBodyType === "d" && userFitnessStruggle === "b") {
-      quote = "Lose fat and achieve lean Physique";
-    } else if (userBodyType === "d" && userFitnessStruggle === "c") {
-      quote = "Lose fat and achieve lean Physique";
-    } else if (userBodyType === "d" && userFitnessStruggle === "d") {
-      quote = "Build Muscles";
-    }
+      if (userBodyType === "a") {
+          quote = "Lose fat and achieve a lean physique";
+      } else if (userBodyType === "b" || userBodyType === "d") {
+          quote = "Build Muscles";
+      } else if (userBodyType === "c") {
+          quote = "Build Muscles or Lose fat and achieve a lean physique";
+      }
+  } else if (userGender === "male") {
+      const userBodyType = userAnswers[1];
+      const userFitnessStruggle = userAnswers[3];
+
+      if (userBodyType === "a" && userFitnessStruggle === "a") {
+          quote = "Build Muscles";
+      } else if (userBodyType === "a" && userFitnessStruggle === "b") {
+          quote = "Lose fat and achieve lean Physique";
+      } else if (userBodyType === "b" && userFitnessStruggle === "a") {
+          quote = "Lose fat and achieve lean Physique";
+      } else if (userBodyType === "b" && userFitnessStruggle === "b") {
+          quote = "Build Muscles";
+      } else if (userBodyType === "b" && userFitnessStruggle === "c") {
+          quote = "Lose fat and achieve lean Physique";
+      } else if (userBodyType === "b" && userFitnessStruggle === "d") {
+          quote = "Build Muscles";
+      } else if (userBodyType === "c" && userFitnessStruggle === "a") {
+          quote = "Build Muscles";
+      } else if (userBodyType === "c" && userFitnessStruggle === "b") {
+          quote = "Lose fat and achieve lean Physique";
+      } else if (userBodyType === "c" && userFitnessStruggle === "c") {
+          quote = "Build Muscles";
+      } else if (userBodyType === "c" && userFitnessStruggle === "d") {
+          quote = "Lose fat and achieve lean Physique";
+      } else if (userBodyType === "d" && userFitnessStruggle === "a") {
+          quote = "Build Muscles";
+      } else if (userBodyType === "d" && userFitnessStruggle === "b") {
+          quote = "Lose fat and achieve lean Physique";
+      } else if (userBodyType === "d" && userFitnessStruggle === "c") {
+          quote = "Lose fat and achieve lean Physique";
+      } else if (userBodyType === "d" && userFitnessStruggle === "d") {
+          quote = "Build Muscles";
+      }
   }
 
-  const resultElement = document.createElement("p");
-  resultElement.innerText = `You are ${userGender}. Your fitness goal is: ${quote}`;
+  // Create a container for the result
+  const resultContainer = document.createElement("div");
+  resultContainer.classList.add("result-container");
+
+  // Create a heading for the result
+  const resultHeading = document.createElement("h2");
+  resultHeading.innerText = "Your Fitness Goal";
+
+  // Create a paragraph for the user's gender and fitness goal
+  const resultParagraph = document.createElement("p");
+  resultParagraph.innerHTML = `You are <strong>${userGender}</strong>. Your fitness goal is: <strong>${quote}</strong>`;
+
+  // Append elements to the result container
+  resultContainer.appendChild(resultHeading);
+  resultContainer.appendChild(resultParagraph);
+
+  // Clear the quiz container and append the result container
   quizContainer.innerHTML = "";
-  quizContainer.appendChild(resultElement);
+  quizContainer.appendChild(resultContainer);
 }
+
 
 loadQuestion();
 selectAnswer();
