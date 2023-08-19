@@ -1,6 +1,6 @@
 const quizData = [
-    {
-    question: "what is your gender?",
+  {
+    question: "What is your gender?",
     a: "Male",
     b: "Female",
     correct: "b",
@@ -39,7 +39,7 @@ const quizData = [
   },
   {
     question: "How motivated are you to reach your fitness goals?",
-    a: "I’m ready let’s do this",
+    a: "I’m ready, let’s do this",
     b: "Hopeful, but could use some guidance",
     c: "I’m struggling with some motivation",
     d: "I’m not always motivated, but I know I need to be",
@@ -47,53 +47,100 @@ const quizData = [
   },
 ];
 
-const quiz = document.getElementById("quiz");
-const answerElements = document.querySelectorAll(".answer");
+const quizContainer = document.getElementById("quiz");
 const questionElement = document.getElementById("question");
-const a_text = document.getElementById("a_text");
-const b_text = document.getElementById("b_text");
-const c_text = document.getElementById("c_text");
-const d_text = document.getElementById("d_text");
+const answerElements = document.querySelectorAll(".answer");
 const submitButton = document.getElementById("submit");
 
-let currentQuiz = 0;
-let score = 0;
+let currentQuestion = 0;
+let userAnswers = [];
 
-const deselectAnswers = () => {
-  answerElements.forEach((answer) => (answer.checked = false));
-};
+function loadQuestion() {
+  const currentQuizData = quizData[currentQuestion];
 
-const getSelected = () => {
-  let answer;
-  answerElements.forEach((answerElement) => {
-    if (answerElement.checked) answer = answerElement.id;
-  });
-  return answer;
-};
-
-const loadQuiz = () => {
-  deselectAnswers();
-  const currentQuizData = quizData[currentQuiz];
   questionElement.innerText = currentQuizData.question;
-  a_text.innerText = currentQuizData.a;
-  b_text.innerText = currentQuizData.b;
-  c_text.innerText = currentQuizData.c;
-  d_text.innerText = currentQuizData.d;
-};
+  answerElements[0].nextElementSibling.innerText = currentQuizData.a;
+  answerElements[1].nextElementSibling.innerText = currentQuizData.b;
+  answerElements[2].nextElementSibling.innerText = currentQuizData.c || "";
+  answerElements[3].nextElementSibling.innerText = currentQuizData.d || "";
 
-loadQuiz();
+  // Clear any previous selections
+  answerElements.forEach((answerElement) => {
+    answerElement.checked = false;
+  });
+}
+
+function selectAnswer() {
+  answerElements.forEach((answerElement) => {
+    answerElement.addEventListener("change", (e) => {
+      userAnswers[currentQuestion] = e.target.id;
+    });
+  });
+}
+
+function showResult() {
+  const userGender = userAnswers[0] === "b" ? "female" : "male";
+  let quote = "";
+
+  if (userGender === "female") {
+    const userBodyType = userAnswers[1];
+    
+    if (userBodyType === "a") {
+      quote = "Lose fat and achieve a lean physique";
+    } else if (userBodyType === "b" || userBodyType === "d") {
+      quote = "Build Muscles";
+    } else if (userBodyType === "c") {
+      quote = "Build Muscles or Lose fat and achieve a lean physique";
+    }
+  } else if (userGender === "male") {
+    const userBodyType = userAnswers[1];
+    const userFitnessStruggle = userAnswers[3];
+
+    if (userBodyType === "a" && userFitnessStruggle === "a") {
+      quote = "Build Muscles";
+    } else if (userBodyType === "a" && userFitnessStruggle === "b") {
+      quote = "Lose fat and achieve lean Physique";
+    } else if (userBodyType === "b" && userFitnessStruggle === "a") {
+      quote = "Lose fat and achieve lean Physique";
+    } else if (userBodyType === "b" && userFitnessStruggle === "b") {
+      quote = "Build Muscles";
+    } else if (userBodyType === "b" && userFitnessStruggle === "c") {
+      quote = "Lose fat and achieve lean Physique";
+    } else if (userBodyType === "b" && userFitnessStruggle === "d") {
+      quote = "Build Muscles";
+    } else if (userBodyType === "c" && userFitnessStruggle === "a") {
+      quote = "Build Muscles";
+    } else if (userBodyType === "c" && userFitnessStruggle === "b") {
+      quote = "Lose fat and achieve lean Physique";
+    } else if (userBodyType === "c" && userFitnessStruggle === "c") {
+      quote = "Build Muscles";
+    } else if (userBodyType === "c" && userFitnessStruggle === "d") {
+      quote = "Lose fat and achieve lean Physique";
+    } else if (userBodyType === "d" && userFitnessStruggle === "a") {
+      quote = "Build Muscles";
+    } else if (userBodyType === "d" && userFitnessStruggle === "b") {
+      quote = "Lose fat and achieve lean Physique";
+    } else if (userBodyType === "d" && userFitnessStruggle === "c") {
+      quote = "Lose fat and achieve lean Physique";
+    } else if (userBodyType === "d" && userFitnessStruggle === "d") {
+      quote = "Build Muscles";
+    }
+  }
+
+  const resultElement = document.createElement("p");
+  resultElement.innerText = `You are ${userGender}. Your fitness goal is: ${quote}`;
+  quizContainer.innerHTML = "";
+  quizContainer.appendChild(resultElement);
+}
+
+loadQuestion();
+selectAnswer();
 
 submitButton.addEventListener("click", () => {
-  const answer = getSelected();
-  if (answer) {
-    if (answer === quizData[currentQuiz].correct) score++;
-    currentQuiz++;
-    if (currentQuiz < quizData.length) loadQuiz();
-    else {
-      quiz.innerHTML = `
-            <h2>You answered ${score}/${quizData.length} questions correctly</h2>
-            <button onclick="history.go(0)">Play Again</button>
-        `;
-    }
+  currentQuestion++;
+  if (currentQuestion < quizData.length) {
+    loadQuestion();
+  } else {
+    showResult();
   }
 });
