@@ -36,11 +36,6 @@ const quizData = [
 
 const quizDataF = [
   {
-    question: "What is your gender?",
-    a: "Male",
-    b: "Female",
-  },
-  {
     question: "What is your primary fitness goal?",
     a: "I want to lose fat and look attractive",
     b: "I’m too skinny, so I want to gain weight and look attractive",
@@ -88,7 +83,7 @@ function loadQuestion() {
   answerElements[2].nextElementSibling.innerText = currentQuizData.c || "";
   answerElements[3].nextElementSibling.innerText = currentQuizData.d || "";
 
-  // Clear any previous selections
+  
   answerElements.forEach((answerElement) => {
     answerElement.checked = false;
   });
@@ -99,12 +94,12 @@ function selectAnswer() {
     answerElement.addEventListener("change", (e) => {
       userAnswers[currentQuestion] = e.target.id;
 
-      // Check if the user selected 'Female' on the first question
+      
       if (currentQuestion === 0 && e.target.nextElementSibling.innerText === 'Female') {
         currentUserData = quizDataF;
       }
 
-      // Move to the next question
+      
       currentQuestion++;
       if (currentQuestion < currentUserData.length) {
         loadQuestion();
@@ -120,12 +115,14 @@ function showResult() {
   let quote = "";
 
   if (userGender === "female") {
-      const userBodyType = userAnswers[1];
+      const userBodyType = userAnswers[0];
 
-      if (userBodyType === "a" || userBodyType === "d") {
+      if (userBodyType === "a") {
           quote = "Lose fat and achieve a lean physique";
       } else if (userBodyType === "b" || userBodyType === "c") {
           quote = "Build Muscles";
+      } else if (userBodyType === "d") {
+          quote = "Build Muscles or Lose fat and achieve a lean physique";
       }
   } else if (userGender === "male") {
       const q1 = userAnswers[1];
@@ -155,28 +152,29 @@ function showResult() {
       else if (q1 === "d" && q3 === "a") {
         quote = "Build Muscles";
       }
+    
       else {
         quote = "Lose fat and achieve Lean Physique";
       }
   }
 
-  // Create a container for the result
+  
   const resultContainer = document.createElement("div");
   resultContainer.classList.add("result-container");
 
-  // Create a heading for the result
+  
   const resultHeading = document.createElement("h2");
   resultHeading.innerText = "Your Fitness Goal";
 
-  // Create a paragraph for the user's gender and fitness goal
+  
   const resultParagraph = document.createElement("p");
   resultParagraph.innerHTML = `You are <strong>${userGender}</strong>. Your fitness goal is: <strong>${quote}</strong>`;
 
-  // Append elements to the result container
+  
   resultContainer.appendChild(resultHeading);
   resultContainer.appendChild(resultParagraph);
 
-  // Clear the quiz container and append the result container
+  
   quizContainer.innerHTML = "";
   quizContainer.appendChild(resultContainer);
 }
