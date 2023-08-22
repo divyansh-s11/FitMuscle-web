@@ -3,15 +3,6 @@ const quizData = [
     question: "What is your gender?",
     a: "Male",
     b: "Female",
-    correct: "b",
-  },
-  {
-    question: "What is your current body type?",
-    a: "Rectangle",
-    b: "Hourglass",
-    c: "Pear",
-    d: "Round",
-    correct: "d",
   },
   {
     question: "What is your primary fitness goal?",
@@ -19,7 +10,6 @@ const quizData = [
     b: "To look like a movie actor",
     c: "Boost self-confidence",
     d: "Maintain optimal health",
-    correct: "b",
   },
   {
     question: "Your biggest fitness struggle right now is:",
@@ -27,7 +17,6 @@ const quizData = [
     b: "I have no idea what exercise to do, what to eat",
     c: "Staying motivated and consistent",
     d: "I need support and accountability",
-    correct: "b",
   },
   {
     question: "Your thoughts on aesthetics?",
@@ -35,7 +24,6 @@ const quizData = [
     b: "They are OK, but not the only goal",
     c: "I don't really care about aesthetics. I'm more interested in the health benefits of fitness",
     d: "I don’t know anything about them",
-    correct: "a",
   },
   {
     question: "How motivated are you to reach your fitness goals?",
@@ -43,7 +31,42 @@ const quizData = [
     b: "Hopeful, but could use some guidance",
     c: "I’m struggling with some motivation",
     d: "I’m not always motivated, but I know I need to be",
-    correct: "b",
+  },
+];
+
+const quizDataF = [
+  {
+    question: "What is your gender?",
+    a: "Male",
+    b: "Female",
+  },
+  {
+    question: "What is your primary fitness goal?",
+    a: "I want to lose fat and look attractive",
+    b: "I’m too skinny, so I want to gain weight and look attractive",
+    c: "I want to build strength",
+    d: "I want body curves",
+  },
+  {
+    question: "Your biggest fitness struggle right now is:",
+    a: "I’m too busy",
+    b: "I have no idea what exercise to do, what to eat",
+    c: "Staying motivated and consistent",
+    d: "I need support and accountability",
+  },
+  {
+    question: "Do you want to build muscles on a specific body part?",
+    a: "Yes, I mainly want to build my glutes",
+    b: "I want to build proportional muscle on my upper and lower body",
+    c: "I don’t know much about muscles, I just want a model like body",
+    d: "I want to focus on my lower body",
+  },
+  {
+    question: "How motivated are you to reach your fitness goals?",
+    a: "I’m ready, let’s do this",
+    b: "Hopeful, but could use some guidance",
+    c: "I’m struggling with some motivation",
+    d: "I’m not always motivated, but I know I need to be",
   },
 ];
 
@@ -54,9 +77,10 @@ const submitButton = document.getElementById("submit");
 
 let currentQuestion = 0;
 let userAnswers = [];
+let currentUserData = quizData;
 
 function loadQuestion() {
-  const currentQuizData = quizData[currentQuestion];
+  const currentQuizData = currentUserData[currentQuestion];
 
   questionElement.innerText = currentQuizData.question;
   answerElements[0].nextElementSibling.innerText = currentQuizData.a;
@@ -71,9 +95,22 @@ function loadQuestion() {
 }
 
 function selectAnswer() {
-  answerElements.forEach((answerElement) => {
+ answerElements.forEach((answerElement) => {
     answerElement.addEventListener("change", (e) => {
       userAnswers[currentQuestion] = e.target.id;
+
+      // Check if the user selected 'Female' on the first question
+      if (currentQuestion === 0 && e.target.nextElementSibling.innerText === 'Female') {
+        currentUserData = quizDataF;
+      }
+
+      // Move to the next question
+      currentQuestion++;
+      if (currentQuestion < currentUserData.length) {
+        loadQuestion();
+      } else {
+        showResult();
+      }
     });
   });
 }
@@ -83,18 +120,16 @@ function showResult() {
   let quote = "";
 
   if (userGender === "female") {
-      const userBodyType = userAnswers[2];
+      const userBodyType = userAnswers[1];
 
-      if (userBodyType === "a") {
+      if (userBodyType === "a" || userBodyType === "d") {
           quote = "Lose fat and achieve a lean physique";
-      } else if (userBodyType === "b" || userBodyType === "d") {
+      } else if (userBodyType === "b" || userBodyType === "c") {
           quote = "Build Muscles";
-      } else if (userBodyType === "c") {
-          quote = "Build Muscles or Lose fat and achieve a lean physique";
       }
   } else if (userGender === "male") {
-      const q1 = userAnswers[2];
-      const q3 = userAnswers[4];
+      const q1 = userAnswers[1];
+      const q3 = userAnswers[3];
 
       if (q1 === "a") {
           quote = "Build Muscles";
@@ -119,6 +154,9 @@ function showResult() {
       }
       else if (q1 === "d" && q3 === "a") {
         quote = "Build Muscles";
+      }
+      else {
+        quote = "Lose fat and achieve Lean Physique";
       }
   }
 
@@ -149,7 +187,7 @@ selectAnswer();
 
 submitButton.addEventListener("click", () => {
   currentQuestion++;
-  if (currentQuestion < quizData.length) {
+  if (currentQuestion < currentUserData.length) {
     loadQuestion();
   } else {
     showResult();
