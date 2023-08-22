@@ -84,3 +84,48 @@ label:hover {
 #submit:hover {
     background-color: #333;
 }
+
+/* Media Queries for Responsiveness */
+
+/* Small screens (up to 768px) */
+@media (max-width: 768px) {
+    .quiz-container {
+        max-width: 90%;
+        /* Adjust the width for smaller screens */
+        padding: 10px;
+        /* Adjust padding for smaller screens */
+    }
+
+    #question {
+        font-size: 20px;
+        /* Decrease font size for smaller screens */
+    }
+}
+
+/* Medium screens (769px to 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .quiz-container {
+        max-width: 80%;
+        /* Adjust the width for medium screens */
+        padding: 15px;
+        /* Adjust padding for medium screens */
+    }
+
+    #question {
+        font-size: 22px;
+        /* Adjust font size for medium screens */
+    }
+}
+
+/* Large screens (1025px and above) */
+@media (min-width: 1025px) {
+    .quiz-container {
+        /* No need to change max-width for large screens */
+        padding: 20px;
+        /* Reset padding for large screens */
+    }
+
+    #question {
+        /* Font size can remain the same for large screens */
+    }
+}
