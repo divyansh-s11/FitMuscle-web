@@ -36,6 +36,11 @@ const quizData = [
 
 const quizDataF = [
   {
+    question: "What is your gender?",
+    a: "Male",
+    b: "Female",
+  },
+  {
     question: "What is your primary fitness goal?",
     a: "I want to lose fat and look attractive",
     b: "I’m too skinny, so I want to gain weight and look attractive",
@@ -115,14 +120,14 @@ function showResult() {
   let quote = "";
 
   if (userGender === "female") {
-      const userBodyType = userAnswers[0];
+      const userBodyType = userAnswers[1];
 
       if (userBodyType === "a") {
           quote = "Lose fat and achieve a lean physique";
       } else if (userBodyType === "b" || userBodyType === "c") {
           quote = "Build Muscles";
       } else if (userBodyType === "d") {
-          quote = "Build Muscles or Lose fat and achieve a lean physique";
+          quote = "Lose fat and achieve a lean physique";
       }
   } else if (userGender === "male") {
       const q1 = userAnswers[1];
